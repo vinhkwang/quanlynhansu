@@ -3,14 +3,14 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.project</groupId>
-	<artifactId>QuanLyKaraoke</artifactId>
+	<artifactId> QuanLyCongViec </artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>QuanLyKaraoke Maven Webapp</name>
+	<name> QuanLyCongViec</name>
 	<url>http://maven.apache.org</url>
 	<properties>
-		<maven.compiler.source>17</maven.compiler.source>
-		<maven.compiler.target>17</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -208,6 +208,13 @@
 			<artifactId>commons-validator</artifactId>
 			<version>1.5.0</version>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+		<dependency>
+		    <groupId>mysql</groupId>
+		    <artifactId>mysql-connector-java</artifactId>
+		    <version>8.0.28</version>
+		</dependency>
 
 		<!--
 		http://mvnrepository.com/artifact/org.springframework.security/spring-security-taglibs -->
@@ -218,7 +225,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>QuanLyKaraoke</finalName>
+		<finalName>QuanLyCongViec</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
