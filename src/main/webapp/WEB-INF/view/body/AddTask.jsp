@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="ISO-8859-1"%>
+    pageEncoding="utf-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <jsp:include page="../Common/header.jsp" />
 <div class="container">
@@ -12,10 +12,9 @@
 	  <div class="mb-3">
 	    <label for="startday" class="form-label">Giao cho</label>
 	    <select name="userID" class="form-select" aria-label="Default select example">
-	      <option value="-1">None</option>
-		  <option value="1">One</option>
-		  <option value="2">Two</option>
-		  <option value="3">Three</option>
+	      <c:forEach items="${listUser}" var="c">
+			<option value="${c.ID}">${c.ten}</option>
+			</c:forEach>
 		</select>
 	  </div>
 	  <button type="submit" class="btn btn-primary">Submit</button>

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dmt.dao.TestDB;
+import com.dmt.model.Project;
 import com.dmt.model.Task;
 import com.dmt.model.User;
 
@@ -18,6 +19,14 @@ import com.dmt.model.User;
 public class TaskController {
 	@RequestMapping(value = "/add-task", method = RequestMethod.GET)
 	public String postPorjectView(@RequestParam("idProject") int idProject,HttpServletRequest request) {
+		TestDB t = new TestDB();
+		try {
+			List<User> lt = t.getAllUsers();
+			request.setAttribute("listUser", lt);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		request.setAttribute("idProject", idProject);
 		return "/body/AddTask";
 	}
@@ -84,5 +93,20 @@ public class TaskController {
 			e.printStackTrace();
 		}
 		return "/body/UpdateTask";
+	}
+	@RequestMapping(value = "/edit-task", method = RequestMethod.POST)
+	public String edit(@RequestParam("ID") int id,@RequestParam("task") String task, @RequestParam("status") int status
+			,@RequestParam("ID_Project") int ID_Project,@RequestParam("ID_User") int ID_User ,HttpServletRequest request) {
+		TestDB t = new TestDB();
+		
+		try {
+			Task p = new Task(id, task, status, ID_Project,ID_User);
+			t.updateTask(p);
+			request.setAttribute("checkFlag", 1);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "redirect:/all-task?idProject="+ID_Project;
 	}
 }

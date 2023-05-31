@@ -368,7 +368,8 @@ public class TestDB {
                 String name = resultSet.getString("name");
                 int status = resultSet.getInt("status");
                 int userID = resultSet.getInt("ID_User");
-                Task task = new Task(ID, name, status, projectID, userID);
+                String nameUser = getUserByID(userID).getTen();
+                Task task = new Task(ID, name, status, projectID, userID,nameUser);
                 tasks.add(task);
             }
         return tasks;

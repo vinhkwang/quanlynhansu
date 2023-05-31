@@ -1,9 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
     <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <jsp:include page="../Common/header.jsp" />
 <div class="container">
-<a href="/QuanLyCongViec/add-contract" type="button" class="btn btn-primary">Add Contract</a>
+<a href="${pageContext.request.contextPath}/add-contract" type="button" class="btn btn-primary">Add Contract</a>
 <table class="table">
   <thead>
     <tr>
