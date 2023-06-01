@@ -16,7 +16,7 @@
 		  </div>
 		  <div class="mb-3">
 		    <label for="status" class="form-label">Status</label>
-		    <select name="status" class="form-select" aria-label="Default select example">
+		    <select ${role == 3 ? 'disabled' : 'name="status"'}  class="form-select" aria-label="Default select example">
 			  <option value="1" <% if ((status == 1)) out.print("selected"); %>>Open</option>
 			  <option value="2" <% if ((status == 2)) out.print("selected"); %>>Process</option>
 			  <option value="3" <% if ((status == 3)) out.print("selected"); %>>Completed</option>

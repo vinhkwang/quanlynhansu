@@ -40,7 +40,7 @@ public class ContractController {
 	@RequestMapping(value = "/add-contract", method = RequestMethod.POST)
 	public String add(@RequestParam("contract") String contract, @RequestParam("nameEmployee") String nameEmployee,
 			@RequestParam("userName") String userName,@RequestParam("password") String password,@RequestParam("birthday") java.sql.Date birthday,
-			@RequestParam("ThoiHan") int ThoiHan ,HttpServletRequest request) {
+			@RequestParam("ThoiHan") int ThoiHan ,@RequestParam("role") int role ,HttpServletRequest request) {
 
 		TestDB t = new TestDB();
 		
@@ -51,7 +51,7 @@ public class ContractController {
 			Date currentDate = new Date();
 	        java.sql.Date sqlDate = new java.sql.Date(currentDate.getTime());
 	        System.out.println("Current Date (java.sql.Date): " + sqlDate);
-			Contract ct = new Contract(contract, idUser, 0, ThoiHan, sqlDate);
+			Contract ct = new Contract(contract, idUser, role, ThoiHan, sqlDate);
 			t.addContract(ct);
 			request.setAttribute("checkFlag", 1);
 		} catch (Exception e) {

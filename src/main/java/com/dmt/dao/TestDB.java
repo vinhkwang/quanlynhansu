@@ -46,13 +46,14 @@ public class TestDB {
 	public void addNewUser(User u) throws Exception {
 		ConnectionDB connectionDB = new ConnectionDB();
 		connectionDB.Connect();
-		String sql = "INSERT INTO User (Username, Pass, Ten, Tuoi, Role) VALUES (?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO User (Username, Pass, Ten, Tuoi, ID_Role, IsActive) VALUES (?, ?, ?, ?, ?, ?)";
 		PreparedStatement cmd = connectionDB.cn.prepareStatement(sql);
 		cmd.setString(1, u.getUsername());
 		cmd.setString(2, u.getPass());
 		cmd.setString(3, u.getTen());
 		cmd.setDate(4, u.getTuoi());
 		cmd.setInt(5, u.getID_Role());
+		cmd.setBoolean(6, u.isIsActive());
 		cmd.executeUpdate();
 		connectionDB.cn.close();
 	}
@@ -95,6 +96,29 @@ public class TestDB {
         }
         return user;
 	}
+	public User CheckLoginUser(String userName, String password) throws SQLException {
+		User user = null;
+		ConnectionDB connectionDB = new ConnectionDB();
+		connectionDB.Connect();
+		String query = "SELECT * FROM User WHERE Username = ? and Pass = ?";
+		System.out.println(query +","+userName+","+password);
+        PreparedStatement statement = connectionDB.cn.prepareStatement(query);
+        statement.setString(1, userName);
+        statement.setString(2, password);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            int ID = resultSet.getInt("ID");
+            String Username = resultSet.getString("Username");
+            String Pass = resultSet.getString("Pass");
+            String Ten = resultSet.getString("Ten");
+            Date Tuoi = resultSet.getDate("Tuoi");
+            int ID_Role = resultSet.getInt("ID_Role");
+            int ID_Project = resultSet.getInt("ID_Project");
+            boolean IsActive = resultSet.getBoolean("IsActive");
+            user = new User(ID, Username, Pass, Ten,Tuoi,ID_Role,ID_Project,IsActive);
+        }
+        return user;
+	}
 	public void removeUser(int userID) throws SQLException {
 		ConnectionDB connectionDB = new ConnectionDB();
 		connectionDB.Connect();
@@ -113,7 +137,7 @@ public class TestDB {
     	List<User> userList = new ArrayList<>();
     	ConnectionDB connectionDB = new ConnectionDB();
 		connectionDB.Connect();
-        String query = "SELECT * FROM User where role = 2";
+        String query = "SELECT * FROM User where ID_Role = 3";
         PreparedStatement statement = connectionDB.cn.prepareStatement(query);
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
@@ -152,6 +176,29 @@ public class TestDB {
         }
         return user;
 	}
+	public List<User> getUserByRole(int userRole) throws SQLException {
+		List<User> userList = new ArrayList<>();
+        ConnectionDB connectionDB = new ConnectionDB();
+		connectionDB.Connect();
+        String query = "SELECT * FROM User WHERE ID_Role = ?";
+        System.out.println(query + " " + userRole);
+        PreparedStatement statement = connectionDB.cn.prepareStatement(query);
+        statement.setInt(1, userRole);
+
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+        	int ID = resultSet.getInt("ID");
+            String name = resultSet.getString("Ten");
+            Date age = resultSet.getDate("Tuoi");
+            int projectID = resultSet.getInt("ID_Project");
+            boolean isActive = resultSet.getBoolean("IsActive");
+            String userName = resultSet.getString("Username");
+            String pass = resultSet.getString("Pass");
+            User user = new User(ID, userName, pass, name,age, userRole ,projectID, isActive);
+            userList.add(user);
+        }
+        return userList;
+	}
 	public List<User> getUserByIDProject(int projectID) throws SQLException {
 		List<User> userList = new ArrayList<>();
         ConnectionDB connectionDB = new ConnectionDB();
@@ -161,7 +208,7 @@ public class TestDB {
         statement.setInt(1, projectID);
 
         ResultSet resultSet = statement.executeQuery();
-        if (resultSet.next()) {
+        while (resultSet.next()) {
         	int ID = resultSet.getInt("ID");
             String name = resultSet.getString("Ten");
             Date age = resultSet.getDate("Tuoi");
@@ -267,11 +314,11 @@ public class TestDB {
 			String query= "";
 			PreparedStatement statement;
 			if(task.getUserID() ==-1) {
-				query = "INSERT INTO Task (Name, Status, ID_Project) VALUES (?, ?, ?)";
+				query = "INSERT INTO Task (TaskName, Status, ID_Project) VALUES (?, ?, ?)";
 				statement = connectionDB.cn.prepareStatement(query);
 			}else 
 			{
-				query = "INSERT INTO Task (Name, Status, ID_Project, ID_User) VALUES (?, ?, ?, ?)";
+				query = "INSERT INTO Task (TaskName, Status, ID_Project, ID_User) VALUES (?, ?, ?, ?)";
 				statement = connectionDB.cn.prepareStatement(query);
 	            statement.setInt(4, task.getUserID());
 			}
@@ -303,11 +350,12 @@ public class TestDB {
 	public void updateTask(Task task) throws SQLException {
 		ConnectionDB connectionDB = new ConnectionDB();
 		connectionDB.Connect();
-        String query = "UPDATE Task SET Name = ?, Status = ? WHERE ID = ?";
+        String query = "UPDATE Task SET TaskName = ?, Status = ?, ID_User = ? WHERE ID = ?";
         PreparedStatement statement = connectionDB.cn.prepareStatement(query);
         statement.setString(1, task.getName());
         statement.setInt(2, task.getStatus());
-        statement.setInt(3, task.getID());
+        statement.setInt(3, task.getUserID());
+        statement.setInt(4, task.getID());
 
         int rowsAffected = statement.executeUpdate();
         if (rowsAffected > 0) {
@@ -326,7 +374,7 @@ public class TestDB {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 int ID = resultSet.getInt("ID");
-                String name = resultSet.getString("name");
+                String name = resultSet.getString("TaskName");
                 int status = resultSet.getInt("status");
                 int projectID = resultSet.getInt("ID_Project");
                 int ID_User = resultSet.getInt("ID_User");
@@ -345,7 +393,7 @@ public class TestDB {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 int ID = resultSet.getInt("ID");
-                String name = resultSet.getString("name");
+                String name = resultSet.getString("TaskName");
                 int status = resultSet.getInt("status");
                 int projectID = resultSet.getInt("ID_Project");
                 int ID_User = resultSet.getInt("ID_User");
@@ -365,11 +413,30 @@ public class TestDB {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 int ID = resultSet.getInt("ID");
-                String name = resultSet.getString("name");
+                String name = resultSet.getString("TaskName");
                 int status = resultSet.getInt("status");
                 int userID = resultSet.getInt("ID_User");
                 String nameUser = getUserByID(userID).getTen();
                 Task task = new Task(ID, name, status, projectID, userID,nameUser);
+                tasks.add(task);
+            }
+        return tasks;
+    }
+	public List<Task> getTasksByUserID(int userID) throws SQLException{
+        List<Task> tasks = new ArrayList<>();
+	        ConnectionDB connectionDB = new ConnectionDB();
+			connectionDB.Connect();    
+            String query = "SELECT * FROM Task WHERE ID_User = ?";
+            PreparedStatement statement = connectionDB.cn.prepareStatement(query);
+            statement.setInt(1, userID);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int ID = resultSet.getInt("ID");
+                String name = resultSet.getString("TaskName");
+                int status = resultSet.getInt("status");
+                int projectID = resultSet.getInt("ID_Project");
+                String nameProject = getProjectByID(projectID).getName();
+                Task task = new Task(ID, name, status, projectID, userID,"",nameProject );
                 tasks.add(task);
             }
         return tasks;
@@ -433,7 +500,7 @@ public class TestDB {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 int ID = resultSet.getInt("ID");
-                String name = resultSet.getString("name");
+                String name = resultSet.getString("ten");
                 Date startDate = resultSet.getDate("startDate");
                 Date endDate = resultSet.getDate("endDate");
 

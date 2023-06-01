@@ -1,17 +1,17 @@
 package com.dmt.controller;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.dmt.dao.Constant;
 import com.dmt.dao.TestDB;
-import com.dmt.model.Project;
 import com.dmt.model.Task;
 import com.dmt.model.User;
 
@@ -19,49 +19,83 @@ import com.dmt.model.User;
 public class TaskController {
 	@RequestMapping(value = "/add-task", method = RequestMethod.GET)
 	public String postPorjectView(@RequestParam("idProject") int idProject,HttpServletRequest request) {
-		TestDB t = new TestDB();
-		try {
-			List<User> lt = t.getAllUsers();
-			request.setAttribute("listUser", lt);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		HttpSession session = request.getSession();
+		if(session.getAttribute("role") != null) 
+		{
+			int role = (int)session.getAttribute("role");
+			if(role == Constant.Admin || role == Constant.PM) 
+			{
+				TestDB t = new TestDB();
+				try {
+					List<User> lt = t.getAllUsers();
+					request.setAttribute("listUser", lt);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				request.setAttribute("idProject", idProject);
+				return "/body/AddTask";
+			}
 		}
-		request.setAttribute("idProject", idProject);
-		return "/body/AddTask";
+		return "redirect:/login";
 	}
 	@RequestMapping(value = "/add-task", method = RequestMethod.POST)
 	public String postTask(@RequestParam("task") String task, @RequestParam("userID") int ID_User,
 			@RequestParam("idProject") int idProject,
 			HttpServletRequest request) {
-
-		TestDB t = new TestDB();
-		
-		try {
-			Task ta = new Task(ID_User, task, 1, idProject, ID_User);
-			t.addTask(ta);
-			request.setAttribute("checkFlag", 1);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		HttpSession session = request.getSession();
+		if(session.getAttribute("role") != null) 
+		{
+			int role = (int)session.getAttribute("role");
+			if(role == Constant.Admin || role == Constant.PM) 
+			{
+				TestDB t = new TestDB();
+				try {
+					Task ta = new Task(ID_User, task, 1, idProject, ID_User);
+					t.addTask(ta);
+					request.setAttribute("checkFlag", 1);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return "redirect:/all-task?idProject="+idProject;
+			}
 		}
-		return "redirect:/all-task?idProject="+idProject;
+		return "redirect:/login";
 	}
 	@RequestMapping(value = "/all-task", method = RequestMethod.GET)
-	public String getAllProject(@RequestParam("idProject") int idProject,HttpServletRequest request) {
-		List<Task> all = new ArrayList<>();
-		TestDB t = new TestDB();
-		try {
-			all = t.getTasksByProjectID(idProject);
-			if (all.isEmpty() == false && all != null) {
-				request.setAttribute("listTask", all);
+	public String getAllProject(@RequestParam(value = "idProject", required=false) Integer idProject,HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		if(session.getAttribute("role") != null) 
+		{
+			List<Task> all = new ArrayList<>();
+			TestDB t = new TestDB();
+			try {
+				if(idProject != null) 
+				{
+					all = t.getTasksByProjectID(idProject);
+					if (all.isEmpty() == false && all != null) {
+						request.setAttribute("listTask", all);
+						request.setAttribute("idProject",idProject);
+					}
+					request.setAttribute("role",Constant.PM);
+				}else 
+				{
+					int ID = (int) session.getAttribute("ID");
+					all = t.getTasksByUserID(ID);
+					if (all.isEmpty() == false && all != null) {
+						request.setAttribute("listTask", all);
+					}
+					request.setAttribute("role",Constant.Employee);
+				}
 			}
-			request.setAttribute("idProject",idProject);
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			return "/body/AllTask";
 		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		return "/body/AllTask";
+		
+		return "redirect:/login";
 	}
 	@RequestMapping(value = "/delete-task", method = RequestMethod.GET)
 	public String delete(@RequestParam("ID") int id,HttpServletRequest request) {
@@ -78,35 +112,56 @@ public class TaskController {
 	@RequestMapping(value = "/edit-task", method = RequestMethod.GET)
 	public String editProject(@RequestParam("ID") int id,@RequestParam("task") String task, @RequestParam("status") int status
 			,@RequestParam("ID_Project") int ID_Project,@RequestParam("ID_User") int ID_User ,HttpServletRequest request) {
-		TestDB t = new TestDB();
-		
-		try {
-			List<User> listUser = t.getAllUsers();
-			request.setAttribute("ID", id);
-			request.setAttribute("task", task);
-			request.setAttribute("status", status);
-			request.setAttribute("ID_Project", ID_Project);
-			request.setAttribute("ID_User", ID_User);
-			request.setAttribute("listUser", listUser);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		HttpSession session = request.getSession();
+		if(session.getAttribute("role") != null) 
+		{
+			int role = (int)session.getAttribute("role");
+			System.out.println(role + "role");
+			TestDB t = new TestDB();
+			try {
+				List<User> listUser = t.getUserByRole(3);
+				request.setAttribute("ID", id);
+				request.setAttribute("task", task);
+				request.setAttribute("status", status);
+				request.setAttribute("ID_Project", ID_Project);
+				request.setAttribute("ID_User", ID_User);
+				request.setAttribute("listUser", listUser);
+				request.setAttribute("role", role);
+				System.out.println(listUser.size());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return "/body/UpdateTask";
 		}
-		return "/body/UpdateTask";
+		return "redirect:/login";
 	}
 	@RequestMapping(value = "/edit-task", method = RequestMethod.POST)
-	public String edit(@RequestParam("ID") int id,@RequestParam("task") String task, @RequestParam("status") int status
+	public String edit(@RequestParam("ID") int id,@RequestParam("task") String task, @RequestParam(value="status", required=false) Integer status
 			,@RequestParam("ID_Project") int ID_Project,@RequestParam("ID_User") int ID_User ,HttpServletRequest request) {
-		TestDB t = new TestDB();
-		
-		try {
-			Task p = new Task(id, task, status, ID_Project,ID_User);
-			t.updateTask(p);
-			request.setAttribute("checkFlag", 1);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		HttpSession session = request.getSession();
+		if(session.getAttribute("role") != null) 
+		{
+			TestDB t = new TestDB();
+			int statusUser = 0;
+			try {
+				if(status == null ) {
+					Task currentTask = t.getTaskByID(id);
+					statusUser = currentTask.getStatus();
+				}else 
+				{
+					statusUser = status;
+				}
+				System.out.println(statusUser+" "+statusUser);
+				Task p = new Task(id, task, statusUser, ID_Project,ID_User);
+				t.updateTask(p);
+				request.setAttribute("checkFlag", 1);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return "redirect:/all-task?idProject="+ID_Project;
 		}
-		return "redirect:/all-task?idProject="+ID_Project;
+		return "redirect:/login";
 	}
 }

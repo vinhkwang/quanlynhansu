@@ -7,6 +7,7 @@ public class Task {
 	    private int projectID;
 	    private int userID;
 	    private String assign;
+	    private String nameProject;
 
 	    public Task(int ID, String name, int status, int projectID, int userID) {
 	        this.ID = ID;
@@ -23,8 +24,19 @@ public class Task {
 	        this.userID = userID;
 	        this.assign = assign;
 	    }
+	    public Task(int ID, String name, int status, int projectID, int userID, String assign, String nameProject) {
+	        this.ID = ID;
+	        this.name = name;
+	        this.status = status;
+	        this.projectID = projectID;
+	        this.userID = userID;
+	        this.assign = assign;
+	        this.nameProject = nameProject;
+	    }
 
-	    
+	    public String getNameProject() {
+    		return nameProject;
+	    }
 	    public String getAssign() {
 			return assign;
 		}

@@ -13,6 +13,14 @@
 	    <input type="text" class="form-control" id="nameEmployee" name ="nameEmployee">
 	  </div>
 	  <div class="mb-3">
+	    <label for="role" class="form-label">Role</label>
+	    <select name="role" class="form-select" aria-label="Default select example">
+			<option value="3">Nhân viên</option>
+			<option value="2">PM</option>
+			<option value="1">Amin</option>
+		</select>
+	  </div>
+	  <div class="mb-3">
 	    <label for="userName" class="form-label">Tên đăng nhập</label>
 	    <input type="text" class="form-control" id="userName" name ="userName">
 	  </div>
