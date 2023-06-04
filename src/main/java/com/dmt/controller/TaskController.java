@@ -18,7 +18,8 @@ import com.dmt.model.User;
 @org.springframework.stereotype.Controller
 public class TaskController {
 	@RequestMapping(value = "/add-task", method = RequestMethod.GET)
-	public String postPorjectView(@RequestParam("idProject") int idProject,HttpServletRequest request) {
+	public String postPorjectView(@RequestParam(value="idProject",required = false) Integer idProject,HttpServletRequest request) {
+		if(idProject == null) {return "redirect:/login";}
 		HttpSession session = request.getSession();
 		if(session.getAttribute("role") != null) 
 		{
@@ -34,15 +35,16 @@ public class TaskController {
 					e.printStackTrace();
 				}
 				request.setAttribute("idProject", idProject);
-				return "/body/AddTask";
+				return "/AddTask";
 			}
 		}
 		return "redirect:/login";
 	}
 	@RequestMapping(value = "/add-task", method = RequestMethod.POST)
 	public String postTask(@RequestParam("task") String task, @RequestParam("userID") int ID_User,
-			@RequestParam("idProject") int idProject,
+			@RequestParam(value="idProject",required = false) Integer idProject,
 			HttpServletRequest request) {
+		if(idProject == null) {return "redirect:/login";}
 		HttpSession session = request.getSession();
 		if(session.getAttribute("role") != null) 
 		{
@@ -68,16 +70,25 @@ public class TaskController {
 		HttpSession session = request.getSession();
 		if(session.getAttribute("role") != null) 
 		{
+			int role = (int)session.getAttribute("role");
 			List<Task> all = new ArrayList<>();
 			TestDB t = new TestDB();
 			try {
-				if(idProject != null) 
+				if(idProject != null && role == 3) 
+				{
+					return "redirect:/all-task";
+				}
+				if(idProject == null && (role == 1 || role == 2)) 
+				{
+					return "redirect:/all-project";
+				}
+				if(idProject != null && (role == 1 || role == 2)) 
 				{
 					all = t.getTasksByProjectID(idProject);
 					if (all.isEmpty() == false && all != null) {
 						request.setAttribute("listTask", all);
-						request.setAttribute("idProject",idProject);
 					}
+					request.setAttribute("idProject",idProject);
 					request.setAttribute("role",Constant.PM);
 				}else 
 				{
@@ -92,7 +103,7 @@ public class TaskController {
 			catch (Exception e) {
 				e.printStackTrace();
 			}
-			return "/body/AllTask";
+			return "/AllTask";
 		}
 		
 		return "redirect:/login";
@@ -132,28 +143,27 @@ public class TaskController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			return "/body/UpdateTask";
+			return "/UpdateTask";
 		}
 		return "redirect:/login";
 	}
 	@RequestMapping(value = "/edit-task", method = RequestMethod.POST)
-	public String edit(@RequestParam("ID") int id,@RequestParam("task") String task, @RequestParam(value="status", required=false) Integer status
+	public String edit(@RequestParam("ID") int id,@RequestParam(value="task",required = false) String task, @RequestParam(value="status", required=false) Integer status
 			,@RequestParam("ID_Project") int ID_Project,@RequestParam("ID_User") int ID_User ,HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		if(session.getAttribute("role") != null) 
 		{
 			TestDB t = new TestDB();
-			int statusUser = 0;
+			String taskName = "";
 			try {
-				if(status == null ) {
+				if(task == null ) {
 					Task currentTask = t.getTaskByID(id);
-					statusUser = currentTask.getStatus();
+					taskName = currentTask.getName();
 				}else 
 				{
-					statusUser = status;
+					taskName = task;
 				}
-				System.out.println(statusUser+" "+statusUser);
-				Task p = new Task(id, task, statusUser, ID_Project,ID_User);
+				Task p = new Task(id, taskName, status, ID_Project,ID_User);
 				t.updateTask(p);
 				request.setAttribute("checkFlag", 1);
 			} catch (Exception e) {

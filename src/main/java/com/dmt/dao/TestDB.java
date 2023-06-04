@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -306,6 +307,20 @@ public class TestDB {
             }
         return null;
     }
+	public  int countContract() throws SQLException{
+			ConnectionDB connectionDB = new ConnectionDB();
+			connectionDB.Connect();
+            String query = "SELECT COUNT(*) AS count FROM Contract";
+            int projectCount =0;
+            Statement statement = connectionDB.cn.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                if (resultSet.next()) {
+                    projectCount = resultSet.getInt("count");
+                }
+            return projectCount;
+            
+}
+	
 	
 	//task
 	public void addTask(Task task) throws SQLException {
@@ -441,6 +456,48 @@ public class TestDB {
             }
         return tasks;
     }
+	public  int countTask() throws SQLException{
+		ConnectionDB connectionDB = new ConnectionDB();
+		connectionDB.Connect();
+        String query = "SELECT COUNT(*) AS count FROM Task";
+        int Count =0;
+        Statement statement = connectionDB.cn.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            if (resultSet.next()) {
+            	Count = resultSet.getInt("count");
+            }
+        return Count;
+        
+	}
+	public  int countTaskStatus(int status) throws SQLException{
+		/*
+		 * ConnectionDB connectionDB = new ConnectionDB(); connectionDB.Connect();
+		 * String query = "SELECT COUNT(*) AS count FROM Task where Status = ?"; int
+		 * Count = 0; PreparedStatement statement =
+		 * connectionDB.cn.prepareStatement(query); statement.setInt(1, status);
+		 * ResultSet resultSet = statement.executeQuery(query); if (resultSet.next()) {
+		 * Count = resultSet.getInt("count"); } return Count;
+		 */
+		int count = 0;
+		ConnectionDB connectionDB = new ConnectionDB();
+		connectionDB.Connect();
+        String query = "SELECT COUNT(*) AS count FROM Task WHERE Status = ?";
+        try (PreparedStatement statement = connectionDB.cn.prepareStatement(query)) {
+            statement.setString(1, String.valueOf(status)); // Convert the status to a string
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                	count = resultSet.getInt("count");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+        
+        
+	}
+	
 	//project
 	public void addProject(Project project) throws SQLException {
 			ConnectionDB connectionDB = new ConnectionDB();
@@ -527,6 +584,19 @@ public class TestDB {
             }
         return projects;
     }
+	public  int countProject() throws SQLException{
+		ConnectionDB connectionDB = new ConnectionDB();
+		connectionDB.Connect();
+        String query = "SELECT COUNT(*) AS count FROM Project";
+        int Count =0;
+        Statement statement = connectionDB.cn.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            if (resultSet.next()) {
+            	Count = resultSet.getInt("count");
+            }
+        return Count;
+        
+	}
 	//role
 	public void createRole(Role role)throws SQLException  {
 			ConnectionDB connectionDB = new ConnectionDB();

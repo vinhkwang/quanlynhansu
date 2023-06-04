@@ -13,39 +13,59 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dmt.dao.Constant;
 import com.dmt.dao.TestDB;
+import com.dmt.model.Contract;
 import com.dmt.model.Project;
+import com.dmt.model.User;
 
 @org.springframework.stereotype.Controller
 public class Controller {
 
 	@RequestMapping(value = "/add-project", method = RequestMethod.GET)
-	public String postPorjectView() {
-		
-		return "/body/AddProject";
+	public String postPorjectView(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		if(session.getAttribute("role")!= null) 
+		{
+			int roleSession = (int)session.getAttribute("role");
+			if( roleSession == Constant.Admin || roleSession == Constant.PM) 
+			{
+				request.setAttribute("role", roleSession);
+				return "/AddProject";
+			}
+		}
+		return "redirect:/login";
 	}
 	@RequestMapping(value = "/add-project", method = RequestMethod.POST)
 	public String postProject(@RequestParam("project") String project, @RequestParam("startday") Date startDay,
 			@RequestParam("enddate") Date endDate,
 			HttpServletRequest request) {
-
-		TestDB t = new TestDB();
-		
-		try {
-			Project p = new Project(0, project, startDay, endDate);
-			t.addProject(p);
-			request.setAttribute("checkFlag", 1);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		HttpSession session = request.getSession();
+		if(session.getAttribute("role")!= null) 
+		{
+			int roleSession = (int)session.getAttribute("role");
+			if( roleSession == Constant.Admin || roleSession == Constant.PM) 
+			{
+				TestDB t = new TestDB();
+				
+				try {
+					Project p = new Project(0, project, startDay, endDate);
+					t.addProject(p);
+					request.setAttribute("checkFlag", 1);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return "redirect:/all-project";
+			}
 		}
-		return "redirect:/all-project";
+		return "redirect:/login";
 	}
 	@RequestMapping(value = "/all-project", method = RequestMethod.GET)
 	public String getAllProject(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		if(session.getAttribute("role")!= null) 
 		{
-			if((int)session.getAttribute("role") == Constant.Admin) 
+			int roleSession = (int)session.getAttribute("role");
+			if(roleSession == Constant.Admin || roleSession == Constant.PM) 
 			{
 				List<Project> all = new ArrayList<>();
 				TestDB t = new TestDB();
@@ -53,12 +73,13 @@ public class Controller {
 					all = t.getAllProjects();
 					if (all.isEmpty() == false && all != null) {
 						request.setAttribute("listProject", all);
+						request.setAttribute("role", roleSession);
 					}
 				}
 				catch (Exception e) {
 					e.printStackTrace();
 				}
-				return "/body/AllProject";
+				return "/AllProject";
 			}
 		}
 		
@@ -68,40 +89,72 @@ public class Controller {
 	@RequestMapping(value = "/edit-project", method = RequestMethod.GET)
 	public String editProject(@RequestParam("ID") int id,@RequestParam("name") String name, @RequestParam("startDate") Date startDate
 			,@RequestParam("endDate") Date endDate,HttpServletRequest request) {
-		request.setAttribute("ID", id);
-		request.setAttribute("name", name);
-		request.setAttribute("startDate", startDate);
-		request.setAttribute("endDate", endDate);
-		return "/body/UpdateProject";
+		HttpSession session = request.getSession();
+		if(session.getAttribute("role")!= null) 
+		{
+			int roleSession = (int)session.getAttribute("role");
+			if( roleSession == Constant.Admin || roleSession == Constant.PM) 
+			{
+				request.setAttribute("ID", id);
+				request.setAttribute("name", name);
+				request.setAttribute("startDate", startDate);
+				request.setAttribute("endDate", endDate);
+				request.setAttribute("role", roleSession);
+				return "/UpdateProject";
+			}
+		}
+		return "redirect:/login";
 	}
 	
 	@RequestMapping(value = "/edit-project", method = RequestMethod.POST)
 	public String editProjectPost(@RequestParam("ID") int id,@RequestParam("name") String name, @RequestParam("startDate") Date startDate
 			,@RequestParam("endDate") Date endDate,HttpServletRequest request) {
-		TestDB t = new TestDB();
 		
-		try {
-			Project p = new Project(id, name, startDate, endDate);
-			t.updateProject(p);
-			request.setAttribute("checkFlag", 1);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		HttpSession session = request.getSession();
+		if(session.getAttribute("role")!= null) 
+		{
+			int roleSession = (int)session.getAttribute("role");
+			if( roleSession == Constant.Admin || roleSession == Constant.PM) 
+			{
+				TestDB t = new TestDB();
+				
+				try {
+					Project p = new Project(id, name, startDate, endDate);
+					t.updateProject(p);
+					request.setAttribute("checkFlag", 1);
+					request.setAttribute("role", roleSession);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return "redirect:/all-project";
+			}
 		}
-		return "redirect:/all-project";
+		return "redirect:/login";
 	}
 	@RequestMapping(value = "/delete-project", method = RequestMethod.GET)
 	public String deleteProject(@RequestParam("ID") int id,HttpServletRequest request) {
-		TestDB t = new TestDB();
 		
-		try {
-			t.deleteProject(id);
-			request.setAttribute("checkFlag", 1);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		HttpSession session = request.getSession();
+		if(session.getAttribute("role")!= null) 
+		{
+			int roleSession = (int)session.getAttribute("role");
+			if( roleSession == Constant.Admin || roleSession == Constant.PM) 
+			{
+				TestDB t = new TestDB();
+				
+				try {
+					t.deleteProject(id);
+					request.setAttribute("checkFlag", 1);
+					request.setAttribute("role", roleSession);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return "redirect:/all-project";
+			}
 		}
-		return "redirect:/all-project";
+		return "redirect:/login";
 	}
 	
 }
