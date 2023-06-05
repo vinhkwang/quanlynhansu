@@ -84,13 +84,13 @@ public class ContractController {
 			{
 				TestDB t = new TestDB();
 				try {
-					User u = new User(0, userName, password, nameEmployee, birthday,2,0,true);
+					User u = new User(0, userName, password, nameEmployee, birthday,role,0,true);
 					t.addNewUser(u);
 					int idUser = t.IsUser(userName).getID();
 					Date currentDate = new Date();
 			        java.sql.Date sqlDate = new java.sql.Date(currentDate.getTime());
 			        System.out.println("Current Date (java.sql.Date): " + sqlDate);
-					Contract ct = new Contract(contract, idUser, role, ThoiHan, sqlDate);
+					Contract ct = new Contract(contract, idUser, 0, ThoiHan, sqlDate);
 					t.addContract(ct);
 					request.setAttribute("checkFlag", 1);
 					return "redirect:/all-contract";
