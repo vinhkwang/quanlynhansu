@@ -20,24 +20,27 @@
                                     <thead>
                                         <tr>
 									      <th>#</th>
+									      <th>Mã hợp đồng</th>
 									      <th>Name</th>
 									      <th>Employee</th>
 									      <th>Thời hạn</th>
 									      <th>Ngày ký</th>
+									      <th></th>
 									    </tr>
                                     </thead>
                                     <tbody>
                                         <c:forEach items="${listContract}" var="c">
 											<tr>
 												<td scope="row">${c.ID}</td>
+												<td>${c.IDContract}</td>
 												<td>${c.name}</td>
 												<td>${c.nameEmployee}</td>
 												<td>${c.thoiHan}</td>
 												<td>${c.ngayKy}</td>
-												<%-- <td>
-													<a href="/QuanLyCongViec/edit-task?ID=${c.ID}&task=${c.name}&status=${c.status}&ID_Project=${c.projectID}&ID_User=${c.userID}" type="button" class="btn btn-primary">Edit</a>
-													<a href="/QuanLyCongViec/delete-task?ID=${c.ID}" type="button" class="btn btn-danger">Delete</a>
-												</td> --%>
+												<td>
+													<a href="${pageContext.request.contextPath}/edit-contract?
+													ID=${c.ID}" type="button" class="btn btn-primary">Edit</a>
+												</td>
 											</tr>
 										</c:forEach>
                                     </tbody>

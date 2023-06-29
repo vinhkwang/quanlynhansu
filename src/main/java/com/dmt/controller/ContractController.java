@@ -45,6 +45,73 @@ public class ContractController {
 		return "redirect:/login";
 		
 	}
+	@RequestMapping(value = "/edit-contract", method = RequestMethod.GET)
+	public String edit(@RequestParam("ID") int ID, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		if(session.getAttribute("role")!= null) 
+		{
+			TestDB t = new TestDB();
+			int role = (int)session.getAttribute("role");
+			
+			if( role == Constant.Admin) 
+			{
+				try {
+					
+					Contract ct = t.getContractByID(ID);
+					User u = t.getUserByID(ct.getID_Mem());
+					request.setAttribute("ct", ct);
+					request.setAttribute("u", u);
+					
+					return "/UpdateContract";
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return "redirect:/login";
+		
+	}
+	@RequestMapping(value = "/edit-contract", method = RequestMethod.POST)
+	public String edit_post(
+			@RequestParam("ID") int ID,
+			@RequestParam("NameContract") String NameContract,
+			@RequestParam("NameEm") String NameEm,
+			@RequestParam("role") int role_input,
+			@RequestParam("userName") String userName,
+			@RequestParam("password") String password,
+			@RequestParam("birthday") java.sql.Date birthday,
+			HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		if(session.getAttribute("role")!= null) 
+		{
+			TestDB t = new TestDB();
+			int role = (int)session.getAttribute("role");
+			
+			if( role == Constant.Admin) 
+			{
+				try {
+					
+					User u = t.getUserByID(ID);
+					u.setID_Role(role_input);
+					u.setTen(NameEm);
+					u.setPass(password);
+					u.setTuoi(birthday);
+					u.setUsername(userName);
+					Contract ct = t.getContractByID(ID);
+					ct.setName(NameContract);
+					t.updateContract(ct);
+					t.updateUser(u);
+					return "redirect:/edit-contract?ID="+ID;
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return "redirect:/login";
+		
+	}
 	@RequestMapping(value = "/add-contract", method = RequestMethod.GET)
 	public String add(HttpServletRequest request) {
 		HttpSession session = request.getSession();

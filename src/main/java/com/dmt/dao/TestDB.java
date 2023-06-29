@@ -61,14 +61,15 @@ public class TestDB {
 	public void updateUser(User user) throws SQLException {
 		ConnectionDB connectionDB = new ConnectionDB();
 		connectionDB.Connect();
-        String query = "UPDATE User SET Ten = ?, Tuoi = ?, ID_Role = ?, ID_Project = ?, IsActive = ? WHERE ID = ?";
+        String query = "UPDATE User SET Ten = ?, Username = ?, Pass = ?,  Tuoi = ?, ID_Role = ?, IsActive = ? WHERE ID = ?";
         PreparedStatement statement = connectionDB.cn.prepareStatement(query);
-        statement.setString(1, user.getUsername());
-        statement.setDate(2, user.getTuoi());
-        statement.setInt(3, user.getID_Role());
-        statement.setInt(4, user.getID_Project());
-        statement.setBoolean(5, user.isIsActive());
-
+        statement.setString(1, user.getTen());
+        statement.setString(2, user.getUsername());
+        statement.setString(3, user.getPass());
+        statement.setDate(4, user.getTuoi());
+        statement.setInt(5, user.getID_Role());
+        statement.setBoolean(6, user.isIsActive());
+        statement.setInt(7, user.getID());
         int rowsAffected = statement.executeUpdate();
         if (rowsAffected > 0) {
             System.out.println("User updated successfully.");
@@ -240,11 +241,11 @@ public class TestDB {
 	public void updateContract(Contract contract) throws SQLException {
 		ConnectionDB connectionDB = new ConnectionDB();
 		connectionDB.Connect();
-        String query = "UPDATE Contract SET Name = ?, ThoiHan = ?, NgayKy = ? WHERE ID = ?";
+        String query = "UPDATE Contract SET Name = ?, ThoiHan = ? WHERE ID = ?";
         PreparedStatement statement = connectionDB.cn.prepareStatement(query);
         statement.setString(1, contract.getName());
         statement.setInt(2, contract.getThoiHan());
-        //statement.setDate(2, contract.getNgayKy());
+        statement.setInt(3, contract.getID());
         int rowsAffected = statement.executeUpdate();
         if (rowsAffected > 0) {
             System.out.println("Contract updated successfully.");

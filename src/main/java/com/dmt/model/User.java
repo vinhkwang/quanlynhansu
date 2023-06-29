@@ -28,6 +28,16 @@ public class User {
 		ID_Project = iD_Project;
 		IsActive = isActive;
 	}
+	public User(int Id ,String username, String pass, String ten, Date tuoi, int iD_Role, boolean isActive) {
+		super();
+		ID = Id;
+		Username = username;
+		Pass = pass;
+		Ten = ten;
+		Tuoi = tuoi;
+		ID_Role = iD_Role;
+		IsActive = isActive;
+	}
 	public String getUsername() {
 		return Username;
 	}

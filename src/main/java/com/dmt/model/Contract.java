@@ -2,6 +2,8 @@ package com.dmt.model;
 
 import java.sql.Date;
 
+import com.dmt.dao.Helper;
+
 public class Contract {
 	private int ID;
 	private String Name;
@@ -10,6 +12,7 @@ public class Contract {
 	private int ThoiHan;
 	private Date NgayKy;
 	private String NameEmployee;
+	private String IDContract;
 	
 	public int getID() {
 		return ID;
@@ -53,6 +56,13 @@ public class Contract {
 	public void setNgayKy(Date ngayKy) {
 		NgayKy = ngayKy;
 	}
+	
+	public String getIDContract() {
+		return IDContract;
+	}
+	public void setIDContract(String iDContract) {
+		IDContract = iDContract;
+	}
 	public Contract(String name, int iD_Mem, int iD_CEO, int thoiHan, Date ngayKy) {
 		super();
 		Name = name;
@@ -60,6 +70,7 @@ public class Contract {
 		ID_CEO = iD_CEO;
 		ThoiHan = thoiHan;
 		NgayKy = ngayKy;
+		
 	}
 	
 	public Contract(int iD, String name, int iD_Mem, int iD_CEO, int thoiHan, Date ngayKy) {
@@ -70,6 +81,7 @@ public class Contract {
 		ID_CEO = iD_CEO;
 		ThoiHan = thoiHan;
 		NgayKy = ngayKy;
+		IDContract = Helper.getIdContract(iD);
 	}
 	public Contract(int iD, String name, int iD_Mem, int iD_CEO, int thoiHan, Date ngayKy, String nameEmployee) {
 		super();
@@ -80,6 +92,7 @@ public class Contract {
 		ThoiHan = thoiHan;
 		NgayKy = ngayKy;
 		NameEmployee = nameEmployee;
+		IDContract = Helper.getIdContract(iD);
 	}
 	public Contract() {
 		super();
