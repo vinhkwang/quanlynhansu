@@ -19,6 +19,16 @@
 							</c:forEach>
 					    </select>
 					  </div>
+					  <div class="mb-3">
+					    <label for="description" class="form-label">Description</label>
+					    <input type="text" class="form-control" id="description" name ="description">
+					    <span class="form-message" style="color: red"></span>
+					  </div>
+					   <div class="mb-3">
+					    <label for="evidence" class="form-label">Evidence</label>
+					    <input type="text" class="form-control" id="evidence" name ="evidence">
+					    <span class="form-message" style="color: red"></span>
+					  </div>
 					  <button type="submit" class="btn btn-primary">Submit</button>
 					</form>
 					<script type="text/javascript">

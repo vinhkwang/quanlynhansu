@@ -205,7 +205,7 @@ public class TestDB {
 		List<User> userList = new ArrayList<>();
         ConnectionDB connectionDB = new ConnectionDB();
 		connectionDB.Connect();
-        String query = "SELECT * FROM User WHERE ID_Project = ?";
+        String query = "SELECT * FROM task t INNER JOIN user u on u.ID = t.ID_User where t.ID_Project = ?";
         PreparedStatement statement = connectionDB.cn.prepareStatement(query);
         statement.setInt(1, projectID);
 
@@ -223,6 +223,7 @@ public class TestDB {
         }
         return userList;
 	}
+	
 	
 	//contract
 	public void addContract(Contract c) throws SQLException {
@@ -274,6 +275,27 @@ public class TestDB {
             }
         return contractList;
     }
+	public List<Contract> getAllContractsSearch(String search) throws SQLException  {
+        List<Contract> contractList = new ArrayList<>();
+        ConnectionDB connectionDB = new ConnectionDB();
+		connectionDB.Connect();
+        String query = "SELECT * FROM Contract where ID LIKE '%"+search+"%'";
+        PreparedStatement statement = connectionDB.cn.prepareStatement(query);
+
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            int ID = resultSet.getInt("ID");
+            String name = resultSet.getString("Name");
+            int ID_Mem = resultSet.getInt("ID_Mem");
+            int ID_CEO = resultSet.getInt("ID_CEO");
+            int ThoiHan = resultSet.getInt("ThoiHan");
+            Date NgayKy = resultSet.getDate("NgayKy");
+            String nameEmployee = getUserByID(ID_Mem).getTen();
+            Contract contract = new Contract(ID, name, ID_Mem, ID_CEO, ThoiHan, NgayKy, nameEmployee);
+            contractList.add(contract);
+        }
+    return contractList;
+}
 	public void deleteContract(int contractID) throws SQLException {
 			ConnectionDB connectionDB = new ConnectionDB();
 			connectionDB.Connect();
@@ -308,6 +330,25 @@ public class TestDB {
             }
         return null;
     }
+	public  Contract getContractUserID(int userID) throws SQLException{
+		ConnectionDB connectionDB = new ConnectionDB();
+		connectionDB.Connect();
+		String query = "SELECT * FROM Contract WHERE ID_Mem = ?";
+        PreparedStatement statement = connectionDB.cn.prepareStatement(query);
+        statement.setInt(1, userID);
+
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            int ID = resultSet.getInt("ID");
+            String name = resultSet.getString("Name");
+            int ID_CEO = resultSet.getInt("ID_CEO");
+            int ThoiHan = resultSet.getInt("ThoiHan");
+            Date NgayKy = resultSet.getDate("NgayKy");
+
+            return new Contract(ID, name, userID, ID_CEO, ThoiHan, NgayKy);
+        }
+    return null;
+}
 	public  int countContract() throws SQLException{
 			ConnectionDB connectionDB = new ConnectionDB();
 			connectionDB.Connect();
@@ -330,17 +371,19 @@ public class TestDB {
 			String query= "";
 			PreparedStatement statement;
 			if(task.getUserID() ==-1) {
-				query = "INSERT INTO Task (TaskName, Status, ID_Project) VALUES (?, ?, ?)";
+				query = "INSERT INTO Task (TaskName, Status, ID_Project, Description, Evidence) VALUES (?, ?, ?, ?, ?)";
 				statement = connectionDB.cn.prepareStatement(query);
 			}else 
 			{
-				query = "INSERT INTO Task (TaskName, Status, ID_Project, ID_User) VALUES (?, ?, ?, ?)";
+				query = "INSERT INTO Task (TaskName, Status, ID_Project, Description, Evidence, ID_User) VALUES (?, ?, ?, ?, ?, ?)";
 				statement = connectionDB.cn.prepareStatement(query);
-	            statement.setInt(4, task.getUserID());
+	            statement.setInt(6, task.getUserID());
 			}
 			statement.setString(1, task.getName());
             statement.setInt(2, task.getStatus());
             statement.setInt(3, task.getProjectID());
+            statement.setString(4, task.getDescription());
+            statement.setString(5, task.getEvidence());
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
                 System.out.println("Task inserted successfully.");
@@ -366,12 +409,14 @@ public class TestDB {
 	public void updateTask(Task task) throws SQLException {
 		ConnectionDB connectionDB = new ConnectionDB();
 		connectionDB.Connect();
-        String query = "UPDATE Task SET TaskName = ?, Status = ?, ID_User = ? WHERE ID = ?";
+        String query = "UPDATE Task SET TaskName = ?, Status = ?, ID_User = ?, Description = ?, Evidence = ? WHERE ID = ?";
         PreparedStatement statement = connectionDB.cn.prepareStatement(query);
         statement.setString(1, task.getName());
         statement.setInt(2, task.getStatus());
         statement.setInt(3, task.getUserID());
-        statement.setInt(4, task.getID());
+        statement.setString(4, task.getDescription());
+        statement.setString(5, task.getEvidence());
+        statement.setInt(6, task.getID());
 
         int rowsAffected = statement.executeUpdate();
         if (rowsAffected > 0) {
@@ -395,7 +440,12 @@ public class TestDB {
                 int projectID = resultSet.getInt("ID_Project");
                 int ID_User = resultSet.getInt("ID_User");
                 String user = getUserByID(ID_User).getTen();
-                return new Task(ID, name, status, projectID, ID_User, user);
+                String des = resultSet.getString("Description");
+                String evi = resultSet.getString("Evidence");
+                Task t = new Task(ID, name, status, projectID, ID_User, user);
+                t.setDescription(des);
+                t.setEvidence(evi);                
+                return t;
             }
         return null;
     }
@@ -572,7 +622,6 @@ public class TestDB {
 			connectionDB.Connect();
             String query = "SELECT * FROM Project";
             PreparedStatement statement = connectionDB.cn.prepareStatement(query);
-
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 int ID = resultSet.getInt("ID");
@@ -585,6 +634,24 @@ public class TestDB {
             }
         return projects;
     }
+	public List<Project> getAllProjectsByUserId(int id) throws SQLException  {
+        List<Project> projects = new ArrayList<>();
+        ConnectionDB connectionDB = new ConnectionDB();
+		connectionDB.Connect();
+        String query = "SELECT * FROM task t inner join project p on t.ID_Project = p.ID where t.ID_User = ?";
+        PreparedStatement statement = connectionDB.cn.prepareStatement(query);
+        statement.setInt(1, id);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            int ID = resultSet.getInt("ID");
+            String name = resultSet.getString("Ten");
+            Date startDate = resultSet.getDate("startDate");
+            Date endDate = resultSet.getDate("endDate");
+            Project project = new Project(ID, name, startDate, endDate);
+            projects.add(project);
+        }
+    return projects;
+}
 	public  int countProject() throws SQLException{
 		ConnectionDB connectionDB = new ConnectionDB();
 		connectionDB.Connect();

@@ -37,6 +37,7 @@
 													<a href="${pageContext.request.contextPath}/edit-project?ID=${c.ID}&name=${c.name}&startDate=${c.startDate}&endDate=${c.endDate}" type="button" class="btn btn-primary"><i class="fas fa-edit"></i></a>
 													<%-- <a href="/QuanLyCongViec/delete-project?ID=${c.ID}" type="button" class="btn btn-danger">Delete</a> --%>
 													<a href="${pageContext.request.contextPath}/all-task?idProject=${c.ID}" type="button" class="btn btn-success"><i class="fas fa-tasks"></i></a>
+													<a href="${pageContext.request.contextPath}/all-member?idProject=${c.ID}" type="button" class="btn btn-success"><i class="fas fa-users"></i></a>
 												</td>
 											</tr>
 										</c:forEach>

@@ -88,7 +88,7 @@ if(session.getAttribute("role") != null){
 			            </div>
 			            <!-- Nav Item - Charts -->
 		        		 <li class="nav-item">
-				                <a class="nav-link" href="all-contract">
+				                <a class="nav-link" href="all-member">
 				                    <i class="fas fa-fw fa-chart-area"></i>
 				                    <span>All Member</span></a>
 	         			  </li>

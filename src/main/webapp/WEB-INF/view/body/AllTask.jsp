@@ -71,7 +71,7 @@
 													<td>${c.assign}</td>
 												</c:if>
 												<td>
-													<a href="${pageContext.request.contextPath}/edit-task?ID=${c.ID}&task=${c.name}&status=${c.status}&ID_Project=${c.projectID}&ID_User=${c.userID}" type="button" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+													<a href="${pageContext.request.contextPath}/edit-task?ID=${c.ID}&task=${c.name}&status=${c.status}&ID_Project=${c.projectID}&ID_User=${c.userID}&description=${c.description}" type="button" class="btn btn-primary"><i class="fas fa-edit"></i></a>
 													<c:if test="${role != 3}">
 													   <a href="${pageContext.request.contextPath}/delete-task?ID=${c.ID}" type="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
 													</c:if>

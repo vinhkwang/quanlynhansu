@@ -8,6 +8,8 @@ public class Task {
 	    private int userID;
 	    private String assign;
 	    private String nameProject;
+	    private String description;
+	    private String evidence;
 
 	    public Task(int ID, String name, int status, int projectID, int userID) {
 	        this.ID = ID;
@@ -77,5 +79,20 @@ public class Task {
 		public void setProjectID(int projectID) {
 			this.projectID = projectID;
 		}
+		
+		public String getDescription() {
+			return description;
+		}
+		public void setDescription(String description) {
+			this.description = description;
+		}
+		public String getEvidence() {
+			return evidence;
+		}
+		public void setEvidence(String evidence) {
+			this.evidence = evidence;
+		}
+		
+		
 	    
 }

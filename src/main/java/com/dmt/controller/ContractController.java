@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dmt.dao.Constant;
+import com.dmt.dao.Helper;
 import com.dmt.dao.TestDB;
 import com.dmt.model.Contract;
 import com.dmt.model.User;
@@ -20,7 +21,9 @@ import com.dmt.model.User;
 @Controller
 public class ContractController {
 	@RequestMapping(value = "/all-contract", method = RequestMethod.GET)
-	public String getAll(HttpServletRequest request) {
+	public String getAll(
+			@RequestParam(value="search",required = false) String search,
+			HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		if(session.getAttribute("role")!= null) 
 		{
@@ -30,7 +33,7 @@ public class ContractController {
 				List<Contract> all = new ArrayList<>();
 				TestDB t = new TestDB();
 				try {
-					all = t.getAllContracts();
+					all = search == null ? t.getAllContracts(): t.getAllContractsSearch(Helper.StringtoId(search));
 					if (all.isEmpty() == false && all != null) {
 						request.setAttribute("listContract", all);
 					}

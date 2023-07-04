@@ -60,7 +60,7 @@ public class Controller {
 		return "redirect:/login";
 	}
 	@RequestMapping(value = "/all-project", method = RequestMethod.GET)
-	public String getAllProject(HttpServletRequest request) {
+	public String getAllProject(@RequestParam(value="id",required = false) Integer id, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		if(session.getAttribute("role")!= null) 
 		{
@@ -70,7 +70,7 @@ public class Controller {
 				List<Project> all = new ArrayList<>();
 				TestDB t = new TestDB();
 				try {
-					all = t.getAllProjects();
+					all = id == null ? t.getAllProjects() : t.getAllProjectsByUserId(id);
 					if (all.isEmpty() == false && all != null) {
 						request.setAttribute("listProject", all);
 						request.setAttribute("role", roleSession);
