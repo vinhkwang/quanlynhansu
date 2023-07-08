@@ -10,6 +10,15 @@
 					    <input type="text" class="form-control" id="project" name ="project">
 					    <span class="form-message" style="color: red"></span>
 					  </div>
+					  <div class="form-group">
+						    <label for="status">PM</label>
+						    <select  name ="ID_PM" class="form-control" id="status">
+								  <c:forEach items="${PM}" var="c">
+										<option value="${c.ID}">${c.ten}</option>
+								  </c:forEach>
+						    </select>
+					  </div>
+					  
 					  <div class="mb-3">
 					    <label for="startday" class="form-label">Ngày bắt đầu</label>
 					    <input type="date" class="form-control" id="startday" name="startday">
@@ -18,6 +27,11 @@
 					  <div class="mb-3">
 					    <label for="enddate" class="form-label">Ngày kết thúc</label>
 					    <input type="date" class="form-control" id="enddate" name="enddate">
+					    <span class="form-message" style="color: red"></span>
+					  </div>
+					  <div class="mb-3">
+					    <label for="description" class="form-label">Description</label>
+					    <input type="text" class="form-control" id="description" name ="description">
 					    <span class="form-message" style="color: red"></span>
 					  </div>
 					  <button type="submit" class="btn btn-primary">Submit</button>

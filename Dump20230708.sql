@@ -34,7 +34,7 @@ CREATE TABLE `contract` (
   KEY `ID_CEO` (`ID_CEO`),
   CONSTRAINT `contract_ibfk_1` FOREIGN KEY (`ID_Mem`) REFERENCES `user` (`ID`),
   CONSTRAINT `contract_ibfk_2` FOREIGN KEY (`ID_CEO`) REFERENCES `user` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `contract` (
 
 LOCK TABLES `contract` WRITE;
 /*!40000 ALTER TABLE `contract` DISABLE KEYS */;
-INSERT INTO `contract` VALUES (1,'Nhan vien',1,0,3,'2023-05-05'),(3,'Nhân viên',4,0,5,'2023-05-29'),(4,'Kí tới chết',5,0,3,'2023-05-31'),(5,'Hợp đồng làm việc',5,3,5,'2023-06-01'),(6,'Lao động',7,3,5,'2023-06-01'),(7,'LD2',8,3,5,'2023-06-01'),(8,'Ld4',9,3,3,'2023-06-01'),(9,'LQ',10,3,10,'2023-06-03'),(10,'Hợp đồng nhân viên',11,3,5,'2023-06-05'),(11,'Hợp đồng LD',12,3,10,'2023-06-05');
+INSERT INTO `contract` VALUES (1,'Nhan vien 1 2 4 4 3',1,0,3,'2023-05-05'),(3,'Nhân viên',4,0,5,'2023-05-29'),(4,'Kí tới chết',5,0,3,'2023-05-31'),(5,'Hợp đồng làm việc',5,0,5,'2023-06-01'),(6,'Lao động',7,0,5,'2023-06-01'),(7,'LD2',8,0,5,'2023-06-01'),(8,'Ld4',9,0,3,'2023-06-01'),(9,'LQ',10,0,10,'2023-06-03'),(10,'Hợp đồng nhân viên',11,0,5,'2023-06-05'),(11,'Hợp đồng LD',12,0,10,'2023-06-05'),(12,'Ký hết mùa hè',13,0,5,'2023-07-07');
 /*!40000 ALTER TABLE `contract` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -59,8 +59,10 @@ CREATE TABLE `project` (
   `Ten` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
   `StartDate` date DEFAULT NULL,
   `EndDate` date DEFAULT NULL,
+  `ID_PM` int DEFAULT NULL,
+  `Description` longtext,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,7 +71,7 @@ CREATE TABLE `project` (
 
 LOCK TABLES `project` WRITE;
 /*!40000 ALTER TABLE `project` DISABLE KEYS */;
-INSERT INTO `project` VALUES (1,'Đầu tư chứng khoáng','2023-05-28','2023-09-28'),(2,'Ki�m 1.5M','2023-05-27','2023-05-07'),(3,'D&#7921; �n','2023-05-29','2023-05-04'),(4,'Tiep theo','2023-05-31','2023-05-03'),(5,'Project 10k','2023-05-30','2023-05-03'),(6,'Kỉ niệm 2 ngày ','2023-05-31','2023-06-07'),(7,'Đầu tư chứng khoáng oke','2023-06-02','2021-04-02'),(8,'Quuangggg','2023-06-02','2023-06-03'),(9,'update theme','2023-06-03','2023-06-04'),(10,'Làm việc','2023-06-05','2023-06-10'),(11,'Project 111','2023-06-05','2023-06-10');
+INSERT INTO `project` VALUES (1,'Đầu tư chứng khoáng','2023-05-28','2023-09-28',1,NULL),(2,'Ki�m 1.5M','2023-05-27','2023-05-31',1,'ai sa'),(3,'D&#7921; �n','2023-05-29','2023-05-04',1,NULL),(4,'Tiep theo','2023-05-31','2023-05-03',1,NULL),(5,'Project 10k','2023-05-30','2023-05-03',1,NULL),(6,'Kỉ niệm 2 ngày ','2023-05-31','2023-06-07',1,NULL),(7,'Đầu tư chứng khoáng oke','2023-06-02','2021-04-02',1,NULL),(8,'Quuangggg','2023-06-02','2023-06-03',1,NULL),(9,'update theme','2023-06-03','2023-06-04',1,NULL),(10,'Làm việc','2023-06-05','2023-06-10',1,NULL),(11,'Project 111','2023-06-05','2023-06-10',1,NULL),(13,'Dự án 0707','2023-07-07','2023-07-14',NULL,NULL),(14,'Project 07','2023-07-07','2023-07-09',13,'ahi hi'),(15,'Project 007','2023-07-07','2023-07-30',13,'ahi');
 /*!40000 ALTER TABLE `project` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -110,12 +112,16 @@ CREATE TABLE `task` (
   `Status` int DEFAULT NULL,
   `ID_Project` int DEFAULT NULL,
   `ID_User` int DEFAULT NULL,
+  `Description` longtext,
+  `Evidence` longtext,
+  `StartDay` date DEFAULT NULL,
+  `EndDay` date DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `ID_User` (`ID_User`),
   KEY `ID_Project` (`ID_Project`),
   CONSTRAINT `task_ibfk_1` FOREIGN KEY (`ID_User`) REFERENCES `user` (`ID`),
   CONSTRAINT `task_ibfk_2` FOREIGN KEY (`ID_Project`) REFERENCES `project` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -124,7 +130,7 @@ CREATE TABLE `task` (
 
 LOCK TABLES `task` WRITE;
 /*!40000 ALTER TABLE `task` DISABLE KEYS */;
-INSERT INTO `task` VALUES (-1,'Task 1',2,1,3),(1,'Làm modal',1,1,NULL),(3,'Làm DB',1,2,NULL),(4,'Code funtion',1,2,NULL),(5,'Code UI',3,2,9),(6,'Task 1',1,3,NULL),(7,'Task 2',1,3,NULL),(8,'Task 3',2,3,3),(9,'L�m modal',2,4,1),(10,'Gi day',1,4,4),(12,'Task 1',2,5,1),(13,'Làm modal',1,5,4),(15,'Code funtion',1,5,5),(16,'Task 1',1,6,5),(17,'Code funtion',1,6,5),(18,'làm chết',2,6,9),(19,'task mới',1,6,7),(20,'Ask 1',1,6,9),(21,'Ask2',1,6,8),(22,'Gưi abc',2,1,6),(23,'Tas k2w',1,1,7),(24,'Task 5',1,1,6),(25,'tiep théo',1,4,9),(26,'Làm DB',2,4,9),(28,'CRĐ',2,8,8),(29,'Update Theme',1,8,7),(30,'Tasaask 1',1,11,8),(31,'Làm modal',1,11,8),(32,'Code funtion',1,11,8);
+INSERT INTO `task` VALUES (3,'Làm DB',1,2,1,NULL,NULL,'2023-07-07','2023-07-08'),(4,'Code funtion',1,2,5,NULL,NULL,'2023-07-07','2023-07-08'),(5,'Code UI',4,2,9,NULL,'done','2023-07-07','2023-07-08'),(6,'Task 1',1,3,4,NULL,NULL,'2023-07-07','2023-07-08'),(7,'Task 2',1,3,9,NULL,NULL,'2023-07-07','2023-07-08'),(9,'L�m modal',2,4,1,NULL,NULL,'2023-07-07','2023-07-08'),(10,'Gi day',1,4,4,NULL,NULL,'2023-07-07','2023-07-08'),(12,'Task 1',2,5,1,NULL,NULL,'2023-07-07','2023-07-08'),(13,'Làm modal',1,5,4,NULL,NULL,'2023-07-07','2023-07-08'),(15,'Code funtion',1,5,5,NULL,NULL,'2023-07-07','2023-07-08'),(16,'Task 1',1,6,5,NULL,NULL,'2023-07-07','2023-07-08'),(17,'Code funtion',1,6,5,NULL,NULL,'2023-07-07','2023-07-08'),(18,'làm chết',2,6,9,NULL,NULL,'2023-07-07','2023-07-08'),(19,'task mới',4,6,7,'','','2023-07-07','2023-07-08'),(20,'Ask 1',1,6,9,NULL,NULL,'2023-07-07','2023-07-08'),(21,'Ask2',1,6,8,NULL,NULL,'2023-07-07','2023-07-08'),(23,'Tas k2w',1,1,7,NULL,NULL,'2023-07-07','2023-07-08'),(25,'tiep théo',1,4,9,NULL,NULL,'2023-07-07','2023-07-08'),(26,'Làm DB',2,4,9,NULL,NULL,'2023-07-07','2023-07-08'),(28,'CRĐ',2,8,8,NULL,NULL,'2023-07-07','2023-07-08'),(29,'Update Theme',1,8,7,NULL,NULL,'2023-07-07','2023-07-08'),(30,'Tasaask 1',1,11,8,NULL,NULL,'2023-07-07','2023-07-08'),(31,'Làm modal',1,11,8,NULL,NULL,'2023-07-07','2023-07-08'),(32,'Code funtion',1,11,8,NULL,NULL,'2023-07-07','2023-07-08'),(36,'123243',1,15,7,'23423434','234234234','2023-07-07','2023-07-08'),(37,'Giao task 07',2,1,10,'task mơi e','ok','2023-07-07','2023-07-08'),(38,'Task tiếp update',4,1,8,'ok',' aa','2023-07-07','2023-07-08'),(39,'Project 07 task 1',1,14,7,'ai nhan ?','','2023-07-08','2023-07-16'),(40,'Project 07 task 2',1,14,10,'','','2023-07-09','2023-07-22'),(41,'CK task',3,1,5,'task chứng khgoanf','oke','2023-07-08','2023-07-12');
 /*!40000 ALTER TABLE `task` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -150,7 +156,7 @@ CREATE TABLE `user` (
   KEY `ID_Project` (`ID_Project`),
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`ID_Role`) REFERENCES `role` (`ID`),
   CONSTRAINT `user_ibfk_2` FOREIGN KEY (`ID_Project`) REFERENCES `project` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -159,7 +165,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (0,'nv1','quang10217','Giam Doc','2023-05-05','1',_binary '',1,NULL),(1,'nv2','quang10217','Quang','2009-05-29','2',NULL,2,NULL),(3,'nv3','quang10217','Giam Doc','2023-05-05','1',_binary '',3,NULL),(4,'nv4','quang10217','Quang rách','2003-05-29','2',NULL,1,NULL),(5,'nv5','quang10217','Ki kI','2001-05-31','2',NULL,3,NULL),(6,'nv5','1','quangn1','2004-06-01','2',NULL,3,NULL),(7,'nv6','1','quangn5','2000-06-01','2',NULL,3,NULL),(8,'n7','1','quangn3','2001-06-01',NULL,_binary '',3,NULL),(9,'n9','1','quangnnn1','2019-06-01',NULL,_binary '',3,NULL),(10,'n10','1','NQ','2003-06-03',NULL,_binary '',3,NULL),(11,'n11','q','NVA','2006-06-05',NULL,_binary '',3,NULL),(12,'n12','1','NVB','2005-06-05',NULL,_binary '',3,NULL);
+INSERT INTO `user` VALUES (0,'nv1','quang10217','Giam Doc','2023-05-05','1',_binary '',1,NULL),(1,'nv2233','quang10217','nv24443','2008-05-29','2',_binary '\0',2,NULL),(4,'nv4','quang10217','Quang rách','2003-05-29','2',NULL,1,NULL),(5,'nv5','quang10217','Ki kI','2001-05-31','2',NULL,3,NULL),(7,'nv6','1','quangn5','2000-06-01','2',NULL,3,NULL),(8,'n7','1','quangn3','2001-06-01',NULL,_binary '',3,NULL),(9,'n9','1','quangnnn1','2019-06-01',NULL,_binary '',3,NULL),(10,'n10','1','NQ','2003-06-03',NULL,_binary '',3,NULL),(11,'n11','q','NVA','2006-06-05',NULL,_binary '',3,NULL),(12,'n12','1','NVB','2005-06-05',NULL,_binary '',3,NULL),(13,'p1','1','PM 001 ','2023-07-07',NULL,_binary '',2,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -172,4 +178,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-09 20:28:39
+-- Dump completed on 2023-07-08 13:34:18

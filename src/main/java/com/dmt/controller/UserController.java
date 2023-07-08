@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dmt.dao.Constant;
+import com.dmt.dao.Helper;
 import com.dmt.dao.TestDB;
 import com.dmt.model.Contract;
 import com.dmt.model.User;
@@ -20,20 +21,29 @@ import com.dmt.model.User;
 @Controller
 public class UserController {
 	@RequestMapping(value = "/all-member", method = RequestMethod.GET)
-	public String getAll( @RequestParam(value = "idProject", required=false) Integer idProject, HttpServletRequest request) {
+	public String getAll( @RequestParam(value = "idProject", required=false) Integer idProject,
+						  @RequestParam(value = "search", required=false) String search,
+						  @RequestParam(value = "type", required=false) Integer type, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		if(session.getAttribute("role")!= null) 
 		{
 			int role = (int)session.getAttribute("role");
-			if( role == Constant.Admin) 
+			if( role == Constant.Admin || role == Constant.PM) 
 			{
 				List<User> all = new ArrayList<>();
+				
 				TestDB t = new TestDB();
 				try {
-					all = idProject == null ? t.getAllUsers() : t.getUserByIDProject(idProject);
+					all = idProject == null ? t.getAllUsers(3): t.getUserByIDProject(idProject);
+					if(type != null && search != null) {
+						all = Helper.SearchUserByType(all, type, search);
+					}
 					if (all.isEmpty() == false && all != null) {
 						request.setAttribute("listUser", all);
 					}
+					if(idProject != null) request.setAttribute("idProject", idProject);
+					request.setAttribute("search", search);
+					request.setAttribute("type", type);
 					request.setAttribute("role",role);
 					return "/AllUser";
 				}

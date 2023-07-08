@@ -78,11 +78,7 @@ if(session.getAttribute("role") != null){
 				                    <i class="fas fa-fw fa-chart-area"></i>
 				                    <span>All Contract</span></a>
 	         			  </li>
-	        			<li class="nav-item">
-			                <a class="nav-link" href="add-contract">
-			                    <i class="fas fa-fw fa-chart-area"></i>
-			                    <span>Add Contract</span></a>
-			            </li>
+	        			
 			            <div class="sidebar-heading">
 			                Member
 			            </div>
@@ -107,11 +103,6 @@ if(session.getAttribute("role") != null){
 						                <a class="nav-link" href="all-project">
 						                    <i class="fas fa-fw fa-chart-area"></i>
 						                    <span>All Project</span></a>
-			            </li>
-	        			<li class="nav-item">
-			                <a class="nav-link" href="add-project">
-			                    <i class="fas fa-fw fa-chart-area"></i>
-			                    <span>Add Project</span></a>
 			            </li>
 	        		<%
 	        	}

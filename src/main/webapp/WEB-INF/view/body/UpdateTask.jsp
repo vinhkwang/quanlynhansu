@@ -19,7 +19,7 @@
 						          <option value="1" <% if ((status == 1)) out.print("selected"); %>>Open</option>
 								  <option value="2" <% if ((status == 2)) out.print("selected"); %>>Process</option>
 								  <option value="4" <% if ((status == 4)) out.print("selected"); %>>Ready for test</option>
-								  <c:if test="${status == 1 || status == 2}">
+								  <c:if test="${role == 1 || role == 2}">
 									     <option value="3" <% if ((status == 3)) out.print("selected"); %>>Completed</option>
 								  </c:if>
 								 
@@ -37,6 +37,16 @@
 									    <option value="-1">Not found Employee</option>
 									</c:if>
 						    </select>
+						  </div>
+						  <div class="mb-3">
+						    <label for="startDate" class="form-label">Ngày bắt đầu</label>
+						    <input type="date" class="form-control" id="startDate" name="startDay" value="${startDay}">
+						    <span class="form-message" style="color: red"></span>
+						  </div>
+						  <div class="mb-3">
+						    <label for="endDay" class="form-label">Ngày kết thúc</label>
+						    <input type="date" class="form-control" id="endDay" name="endDay" value="${endDay}">
+						    <span class="form-message" style="color: red"></span>
 						  </div>
 						  <div class="mb-3">
 						    <label for="description" class="form-label">Description</label>

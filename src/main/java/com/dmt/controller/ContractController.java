@@ -23,6 +23,7 @@ public class ContractController {
 	@RequestMapping(value = "/all-contract", method = RequestMethod.GET)
 	public String getAll(
 			@RequestParam(value="search",required = false) String search,
+			@RequestParam(value="type",required = false) Integer type,
 			HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		if(session.getAttribute("role")!= null) 
@@ -33,14 +34,22 @@ public class ContractController {
 				List<Contract> all = new ArrayList<>();
 				TestDB t = new TestDB();
 				try {
-					all = search == null ? t.getAllContracts(): t.getAllContractsSearch(Helper.StringtoId(search));
-					if (all.isEmpty() == false && all != null) {
-						request.setAttribute("listContract", all);
+					all =  t.getAllContracts();
+					if(search != null && type != -1 && type != null && search != "") 
+					{
+						all = Helper.SearchContactByType(all, type, search);
 					}
+					if (all.isEmpty() == false && all != null) {
+						
+						request.setAttribute("search",search);
+					}
+					request.setAttribute("listContract", all);
+					request.setAttribute("type",type);
 					request.setAttribute("role",role);
 					return "/AllContract";
 				}
 				catch (Exception e) {
+					System.out.println("Loi");
 					e.printStackTrace();
 				}
 			}
@@ -49,7 +58,8 @@ public class ContractController {
 		
 	}
 	@RequestMapping(value = "/edit-contract", method = RequestMethod.GET)
-	public String edit(@RequestParam("ID") int ID, HttpServletRequest request) {
+	public String edit(@RequestParam("ID") int ID,
+					   @RequestParam(value = "type", required=false) Integer type, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		if(session.getAttribute("role")!= null) 
 		{
@@ -64,6 +74,10 @@ public class ContractController {
 					User u = t.getUserByID(ct.getID_Mem());
 					request.setAttribute("ct", ct);
 					request.setAttribute("u", u);
+					if(type != null && type == 1) 
+					{
+						request.setAttribute("onlyview", 1);
+					}
 					
 					return "/UpdateContract";
 				}

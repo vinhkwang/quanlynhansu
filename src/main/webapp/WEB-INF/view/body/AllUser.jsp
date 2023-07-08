@@ -14,28 +14,49 @@
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
                         </div>
+                        <div class= "row">
+                        	<form method="get" action="all-member">
+	                        	<div class = "col-12 input-group" style="align-items: center;">
+			                        <select name="type" class="custom-select">
+									  <option value="-1" selected>Tìm kiếm</option>
+									  <option ${type == 1 ? 'selected' : ''} value="1">Tên</option>
+									  <option ${type == 2 ? 'selected' : ''} value="2">Số dự án tham gia</option>
+									  <option ${type == 3 ? 'selected' : ''} value="3">Số task</option>
+									</select>
+									<input type="text" class="form-control" id="search" name = "search">
+									<c:if test="${not empty idProject}">
+										    <input type="hidden" name="idProject" value="${idProject}">
+									</c:if>
+		                        	<button type="submit" href="#" class="btn btn-success btn-circle btn-sm ml-2"><i class="fas fa-check"></i></button>
+		                        </div>
+                        	</form>
+	                        
+                        </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-									      <th>Mã nhân viên</th>
-									      <th>Tên người dùng</th>
+									      <th>ID</th>
 									      <th>Họ và tên</th>
-									      <th>Năm sinh</th>
+									      <th>Ngày ký hợp đồng</th>
+									      <th>Số task</th>
+									      <th>Số dự án tham gia</th>
 									      <th></th>
 									    </tr>
                                     </thead>
                                     <tbody>
-                                        <c:forEach items="${listUser}" var="c">
+                                    	
+                                        <c:forEach items="${listUser}" var="user">
 											<tr>
-												<td scope="row">${c.ID}</td>
-												<td>${c.username}</td>
-												<td>${c.ten}</td>
-												<td>${c.tuoi}</td>
+												<td scope="row">${user.ID}</td>
+												<td>${user.ten}</td>
+												<td>${user.ngayKy}</td>
+												<td>${user.countTask}</td>
+												<td>${user.countProject}</td>
 												<td>
 													<a href="${pageContext.request.contextPath}/detail-member?
-													id=${c.ID}" type="button" class="btn btn-primary">Detail</a>
+													id=${user	.ID}" type="button" class="btn btn-primary">Detail</a>
 												</td>
 											</tr>
 										</c:forEach>

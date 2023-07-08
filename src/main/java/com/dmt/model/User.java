@@ -11,6 +11,9 @@ public class User {
 	private int ID_Role;
 	private int ID_Project;
 	private boolean IsActive;
+	private int CountTask;
+	private int CountProject;
+	private java.util.Date NgayKy;
 	
 	
 	public User() {
@@ -27,6 +30,20 @@ public class User {
 		ID_Role = iD_Role;
 		ID_Project = iD_Project;
 		IsActive = isActive;
+	}
+	public User(int Id ,String username, String pass, String ten, Date tuoi, int iD_Role, int iD_Project, boolean isActive, int countTask, int countProject, java.util.Date ngayKy) {
+		super();
+		ID = Id;
+		Username = username;
+		Pass = pass;
+		Ten = ten;
+		Tuoi = tuoi;
+		ID_Role = iD_Role;
+		ID_Project = iD_Project;
+		IsActive = isActive;
+		CountProject = countProject;
+		CountTask = countTask;
+		NgayKy = ngayKy;
 	}
 	public User(int Id ,String username, String pass, String ten, Date tuoi, int iD_Role, boolean isActive) {
 		super();
@@ -86,6 +103,25 @@ public class User {
 	public void setID(int iD) {
 		ID = iD;
 	}
+	public int getCountTask() {
+		return CountTask;
+	}
+	public void setCountTask(int countTask) {
+		CountTask = countTask;
+	}
+	public int getCountProject() {
+		return CountProject;
+	}
+	public void setCountProject(int countProject) {
+		CountProject = countProject;
+	}
+	public java.util.Date getNgayKy() {
+		return NgayKy;
+	}
+	public void setNgayKy(java.util.Date ngayKy) {
+		NgayKy = ngayKy;
+	}
+	
 	
 	
 }

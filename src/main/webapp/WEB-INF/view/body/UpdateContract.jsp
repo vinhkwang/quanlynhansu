@@ -13,17 +13,17 @@
 					  </div>
 					  <div class="mb-3">
 					    <label for="NameContract" class="form-label">Tên Hợp đồng</label>
-					    <input type="text" class="form-control" id="NameContract" name ="NameContract" value ="${ct.name}">
+					    <input ${onlyview == 1 ? 'disabled' : 'name ="NameContract"'} type="text" class="form-control" id="NameContract" value ="${ct.name}">
 					    <span class="form-message" style="color: red"></span>
 					  </div>
 					  <div class="mb-3">
 					    <label for="NameEm" class="form-label">Tên Nhân viên</label>
-					    <input type="text" class="form-control" id="NameEm" name ="NameEm" value ="${u.ten}">
+					    <input ${onlyview == 1 ? 'disabled' : 'name ="NameEm"'} type="text" class="form-control" id="NameEm" value ="${u.ten}">
 					    <span class="form-message" style="color: red"></span>
 					  </div>
 					  <div class="form-group">
 					    <label for="role">Role</label>
-					    <select  name ="role" class="form-control" id="role">
+					    <select ${onlyview == 1 ? 'disabled' : 'name ="role"'} class="form-control" id="role">
 						     <option value="3" ${u.ID_Role == 3 ? 'selected' : ''}>Nhân viên</option>
 						     <option value="2" ${u.ID_Role == 2 ? 'selected' : ''}>PM</option>
 						     <option value="1" ${u.ID_Role == 1 ? 'selected' : ''}>Admin</option>
@@ -31,17 +31,17 @@
 					  </div>
 					  <div class="mb-3">
 					    <label for="userName" class="form-label">Tên đăng nhập</label>
-					    <input type="text" class="form-control" id="userName" name ="userName" value="${u.username }">
+					    <input ${onlyview == 1 ? 'disabled' : 'name ="userName"'} type="text" class="form-control" id="userName"  value="${u.username }">
 					    <span class="form-message" style="color: red"></span>
 					  </div>
 					  <div class="mb-3">
 					    <label for="password" class="form-label">Mật khẩu</label>
-					    <input type="password" class="form-control" id="password" name ="password" value="${u.pass }">
+					    <input ${onlyview == 1 ? 'disabled' : 'name ="password"'} type="password" class="form-control" id="password" value="${u.pass }">
 					    <span class="form-message" style="color: red"></span>
 					  </div>
 					  <div class="mb-3">
 					    <label for="birthday" class="form-label">Năm sinh</label>
-					    <input type="date" class="form-control" id="birthday" name ="birthday" placeholder="${u.tuoi }" value="${u.tuoi }">
+					    <input ${onlyview == 1 ? 'disabled' : 'name ="birthday"'} type="date" class="form-control" id="birthday" placeholder="${u.tuoi }" value="${u.tuoi }">
 					    <span class="form-message" style="color: red"></span>
 					  </div>
 					  <%-- <div class="mb-3">
@@ -54,7 +54,10 @@
 					    <input type="date" class="form-control" id="ngayky" name ="ngayky" placeholder="${ct.ngayKy}" value="${ct.ngayky }">
 					    <span class="form-message" style="color: red"></span>
 					  </div> --%>
-					  <button type="submit" class="btn btn-primary">Submit</button>
+					  <c:if test="${onlyview != 1}">
+						    <button type="submit" class="btn btn-primary">Submit</button>
+					  </c:if>
+					  
 					</form>
 						<script type="text/javascript">
 						Validator({

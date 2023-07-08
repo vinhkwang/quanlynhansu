@@ -15,18 +15,23 @@
                             <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
                             
                         </div>
-                    <form action = "all-contract"
-	                    class="d-none d-sm-inline-block form-inline mr-auto my-2 my-md-0 mw-100 navbar-search pt-1">
-	                    <div class="input-group">
-	                        <input name ="search" type="text" class="form-control bg-white border border-dark" placeholder="Nhập mã hợp đồng"
-	                            aria-label="Search" aria-describedby="basic-addon2">
-	                        <div class="input-group-append">
-	                            <button class="btn btn-primary" type="submit">
-	                                <i class="fas fa-search fa-sm"></i>
-	                            </button>
-	                        </div>
-	                    </div>
-                    </form>
+                    	<div class= "row">
+                        	<form method="get" action="all-contract">
+	                        	<div class = "col-12 input-group" style="align-items: center;">
+	                        		<select name="type" class="custom-select">
+									  <option value="-1" selected>Search...</option>
+									  <option ${type == 1 ? 'selected' : ''} value="1">Mã hợp đồng</option>
+									  <option ${type == 2 ? 'selected' : ''} value="2">Tên nhân viên</option>
+									  <option ${type == 3 ? 'selected' : ''} value="3">Thời hạn</option>
+									</select>
+									<input type="text" class="form-control" id="search" name = "search" value="${search}">
+									<c:if test="${not empty idProject}">
+										    <input type="hidden" name="idProject" value="${idProject}">
+									</c:if>
+		                        	<button type="submit" href="#" class="btn btn-success btn-circle btn-sm ml-2"><i class="fas fa-check"></i></button>
+		                        </div>
+                        	</form>
+                        </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">

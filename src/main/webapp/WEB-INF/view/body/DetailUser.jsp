@@ -41,6 +41,8 @@
 													id=${user}" type="button" class="btn btn-primary">Xem tất cả Project</a>
 					<a href="${pageContext.request.contextPath}/all-task?
 													id=${user}" type="button" class="btn btn-primary">Xem tất Task</a>
+					<a href="${pageContext.request.contextPath}/edit-contract?
+													ID=${user}&type=1" type="button" class="btn btn-primary">Hợp đồng</a>
 					</div>
 					
 				</div>

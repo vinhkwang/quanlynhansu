@@ -20,6 +20,16 @@
 					    </select>
 					  </div>
 					  <div class="mb-3">
+					  <div class="mb-3">
+					    <label for="startDay" class="form-label">Ngày bắt đầu</label>
+					    <input type="date" class="form-control" id="startDay" name="startDay">
+					    <span class="form-message" style="color: red"></span>
+					  </div>
+					  <div class="mb-3">
+					    <label for="endDay" class="form-label">Ngày kết thúc</label>
+					    <input type="date" class="form-control" id="endDay" name="endDay">
+					    <span class="form-message" style="color: red"></span>
+					  </div>
 					    <label for="description" class="form-label">Description</label>
 					    <input type="text" class="form-control" id="description" name ="description">
 					    <span class="form-message" style="color: red"></span>
