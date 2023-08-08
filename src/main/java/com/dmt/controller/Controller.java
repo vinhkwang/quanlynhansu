@@ -30,8 +30,7 @@ public class Controller {
 			if( roleSession == Constant.Admin || roleSession == Constant.PM) 
 			{
 				try {
-					TestDB t = new TestDB();
-					request.setAttribute("PM", t.getAllUsers(2));
+					request.setAttribute("PM", TestDB.getAllUsers(2));
 					request.setAttribute("role", roleSession);
 					return "/AddProject";
 				} catch (Exception e) {
@@ -55,11 +54,10 @@ public class Controller {
 			int roleSession = (int)session.getAttribute("role");
 			if( roleSession == Constant.Admin || roleSession == Constant.PM) 
 			{
-				TestDB t = new TestDB();
 				
 				try {
 					Project p = new Project(0, project, startDay, endDate, ID_PM,description);
-					t.addProject(p);
+					TestDB.addProject(p);
 					request.setAttribute("checkFlag", 1);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -83,9 +81,8 @@ public class Controller {
 			if(roleSession == Constant.Admin || roleSession == Constant.PM) 
 			{
 				List<Project> all = new ArrayList<>();
-				TestDB t = new TestDB();
 				try {
-					all = id == null ? t.getAllProjects() : t.getAllProjectsByUserId(id);
+					all = id == null ? TestDB.getAllProjects() : TestDB.getAllProjectsByUserId(id);
 					if(type != null && search != null && search != "") {
 						all = Helper.SearchProjectByType(all, type, search);
 					}
@@ -93,7 +90,7 @@ public class Controller {
 					{
 						int id_pm = (int)session.getAttribute("ID");
 						System.out.println(id_pm + "Hello ID PM");
-						all = t.getAllProjectsByPMId(id_pm);
+						all = TestDB.getAllProjectsByPMId(id_pm);
 					}
 					if (all.isEmpty() == false && all != null) {
 						request.setAttribute("listProject", all);
@@ -127,8 +124,8 @@ public class Controller {
 			if( roleSession == Constant.Admin || roleSession == Constant.PM) 
 			{
 				try {
-					TestDB t = new TestDB();
-					request.setAttribute("PM", t.getAllUsers(2));
+
+					request.setAttribute("PM", TestDB.getAllUsers(2));
 					request.setAttribute("ID_PM", ID_PM);
 					request.setAttribute("ID", id);
 					request.setAttribute("name", name);
@@ -159,12 +156,11 @@ public class Controller {
 			int roleSession = (int)session.getAttribute("role");
 			if( roleSession == Constant.Admin || roleSession == Constant.PM) 
 			{
-				TestDB t = new TestDB();
 				
 				try {
 
 					Project p = new Project(id, name, startDate, endDate, ID_PM,description);
-					t.updateProject(p);
+					TestDB.updateProject(p);
 					request.setAttribute("checkFlag", 1);
 					request.setAttribute("role", roleSession);
 				} catch (Exception e) {
@@ -185,10 +181,9 @@ public class Controller {
 			int roleSession = (int)session.getAttribute("role");
 			if( roleSession == Constant.Admin || roleSession == Constant.PM) 
 			{
-				TestDB t = new TestDB();
 				
 				try {
-					t.deleteProject(id);
+					TestDB.deleteProject(id);
 					request.setAttribute("checkFlag", 1);
 					request.setAttribute("role", roleSession);
 				} catch (Exception e) {

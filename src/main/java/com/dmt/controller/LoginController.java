@@ -37,10 +37,9 @@ public class LoginController {
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String postTask(@RequestParam("username") String username, @RequestParam("password") String password,
 			HttpServletRequest request) {
-		TestDB t = new TestDB();
 		User u = null;
 		try {
-			u =  t.CheckLoginUser(username, password);
+			u =  TestDB.CheckLoginUser(username, password);
 			if(u != null) {
 				HttpSession session = request.getSession();
 				session.setAttribute("username", u.getUsername());

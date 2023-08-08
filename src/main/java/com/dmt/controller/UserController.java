@@ -6,7 +6,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.eclipse.jdt.internal.compiler.util.CtSym;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,10 +30,9 @@ public class UserController {
 			if( role == Constant.Admin || role == Constant.PM) 
 			{
 				List<User> all = new ArrayList<>();
-				
-				TestDB t = new TestDB();
+
 				try {
-					all = idProject == null ? t.getAllUsers(3): t.getUserByIDProject(idProject);
+					all = idProject == null ? TestDB.getAllUsers(3): TestDB.getUserByIDProject(idProject);
 					if(type != null && search != null) {
 						all = Helper.SearchUserByType(all, type, search);
 					}
@@ -64,12 +62,10 @@ public class UserController {
 			int role = (int)session.getAttribute("role");
 			if( role == Constant.Admin || role == Constant.PM) 
 			{
-				TestDB t = new TestDB();
-				
-				
+
 				try {
-					Contract c = t.getContractUserID(id);
-					User u = t.getUserByID(id);
+					Contract c = TestDB.getContractUserID(id);
+					User u = TestDB.getUserByID(id);
 					request.setAttribute("u",u);
 					request.setAttribute("ct",c);
 					request.setAttribute("user",id);

@@ -26,20 +26,19 @@ public class CountController {
 			if( role == Constant.Admin) 
 			{
 				List<Contract> all = new ArrayList<>();
-				TestDB t = new TestDB();
 				try {
-					all = t.getAllContracts();
+					all = TestDB.getAllContracts();
 					if (all.isEmpty() == false && all != null) {
 						request.setAttribute("listContract", all);
 					}
 					DecimalFormat decimalFormat = new DecimalFormat("#.00");
 			        ;
-					int countContract = t.countContract();
-					int countTask = t.countTask();
-					int countProject = t.countProject();
-					String countTask_1 = decimalFormat.format((double)t.countTaskStatus(1)/countTask*100);
-					String countTask_2 = decimalFormat.format((double)t.countTaskStatus(2)/countTask*100);
-					String countTask_3 = decimalFormat.format( (double)t.countTaskStatus(3)/countTask*100);
+					int countContract = TestDB.countContract();
+					int countTask = TestDB.countTask();
+					int countProject = TestDB.countProject();
+					String countTask_1 = decimalFormat.format((double)TestDB.countTaskStatus(1)/countTask*100);
+					String countTask_2 = decimalFormat.format((double)TestDB.countTaskStatus(2)/countTask*100);
+					String countTask_3 = decimalFormat.format( (double)TestDB.countTaskStatus(3)/countTask*100);
 					request.setAttribute("countContract", countContract);
 					request.setAttribute("countTask", countTask);
 					request.setAttribute("countTask_1", countTask_1);

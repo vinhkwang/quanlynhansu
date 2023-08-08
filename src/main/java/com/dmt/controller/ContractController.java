@@ -32,9 +32,8 @@ public class ContractController {
 			if( role == Constant.Admin) 
 			{
 				List<Contract> all = new ArrayList<>();
-				TestDB t = new TestDB();
 				try {
-					all =  t.getAllContracts();
+					all =  TestDB.getAllContracts();
 					if(search != null && type != -1 && type != null && search != "") 
 					{
 						all = Helper.SearchContactByType(all, type, search);
@@ -63,15 +62,14 @@ public class ContractController {
 		HttpSession session = request.getSession();
 		if(session.getAttribute("role")!= null) 
 		{
-			TestDB t = new TestDB();
 			int role = (int)session.getAttribute("role");
 			
 			if( role == Constant.Admin) 
 			{
 				try {
 					
-					Contract ct = t.getContractByID(ID);
-					User u = t.getUserByID(ct.getID_Mem());
+					Contract ct = TestDB.getContractByID(ID);
+					User u = TestDB.getUserByID(ct.getID_Mem());
 					request.setAttribute("ct", ct);
 					request.setAttribute("u", u);
 					if(type != null && type == 1) 
@@ -102,23 +100,22 @@ public class ContractController {
 		HttpSession session = request.getSession();
 		if(session.getAttribute("role")!= null) 
 		{
-			TestDB t = new TestDB();
 			int role = (int)session.getAttribute("role");
 			
 			if( role == Constant.Admin) 
 			{
 				try {
 					
-					User u = t.getUserByID(ID);
+					User u = TestDB.getUserByID(ID);
 					u.setID_Role(role_input);
 					u.setTen(NameEm);
 					u.setPass(password);
 					u.setTuoi(birthday);
 					u.setUsername(userName);
-					Contract ct = t.getContractByID(ID);
+					Contract ct = TestDB.getContractByID(ID);
 					ct.setName(NameContract);
-					t.updateContract(ct);
-					t.updateUser(u);
+					TestDB.updateContract(ct);
+					TestDB.updateUser(u);
 					return "redirect:/edit-contract?ID="+ID;
 				}
 				catch (Exception e) {
@@ -138,9 +135,8 @@ public class ContractController {
 			if( role == Constant.Admin) 
 			{
 				List<Contract> all = new ArrayList<>();
-				TestDB t = new TestDB();
 				try {
-					all = t.getAllContracts();
+					all = TestDB.getAllContracts();
 					if (all.isEmpty() == false && all != null) {
 						request.setAttribute("listContract", all);
 					}
@@ -166,16 +162,15 @@ public class ContractController {
 			int roleSession = (int)session.getAttribute("role");
 			if( roleSession == Constant.Admin) 
 			{
-				TestDB t = new TestDB();
 				try {
 					User u = new User(0, userName, password, nameEmployee, birthday,role,0,true);
-					t.addNewUser(u);
-					int idUser = t.IsUser(userName).getID();
+					TestDB.addNewUser(u);
+					int idUser = TestDB.IsUser(userName).getID();
 					Date currentDate = new Date();
 			        java.sql.Date sqlDate = new java.sql.Date(currentDate.getTime());
 			        System.out.println("Current Date (java.sql.Date): " + sqlDate);
 					Contract ct = new Contract(contract, idUser, 0, ThoiHan, sqlDate);
-					t.addContract(ct);
+					TestDB.addContract(ct);
 					request.setAttribute("checkFlag", 1);
 					return "redirect:/all-contract";
 				} catch (Exception e) {

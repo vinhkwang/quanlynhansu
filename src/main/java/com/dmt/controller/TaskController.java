@@ -30,9 +30,8 @@ public class TaskController {
 			int role = (int)session.getAttribute("role");
 			if(role == Constant.Admin || role == Constant.PM) 
 			{
-				TestDB t = new TestDB();
 				try {
-					List<User> lt = t.getAllUsers(3);
+					List<User> lt = TestDB.getAllUsers(3);
 					request.setAttribute("listUser", lt);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -60,12 +59,11 @@ public class TaskController {
 			int role = (int)session.getAttribute("role");
 			if(role == Constant.Admin || role == Constant.PM) 
 			{
-				TestDB t = new TestDB();
 				try {
 					Task ta = new Task(ID_User, task, 1, idProject, ID_User, startDay, endDay);
 					ta.setDescription(description);
 					ta.setEvidence(evidence);
-					t.addTask(ta);
+					TestDB.addTask(ta);
 					request.setAttribute("checkFlag", 1);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -87,7 +85,6 @@ public class TaskController {
 		{
 			int role = (int)session.getAttribute("role");
 			List<Task> all = new ArrayList<>();
-			TestDB t = new TestDB();
 			try {
 				if(idProject != null && role == 3 && id == null) 
 				{
@@ -99,7 +96,7 @@ public class TaskController {
 				}
 				if(idProject != null && (role == 1 || role == 2)) 
 				{
-					all = t.getTasksByProjectID(idProject);
+					all = TestDB.getTasksByProjectID(idProject);
 					if (all.isEmpty() == false && all != null) {
 						all = Helper.SearchTaskSearch(all, status != null ? status : -1, search);
 						request.setAttribute("listTask", all);
@@ -111,7 +108,7 @@ public class TaskController {
 				}else 
 				{
 					int ID = (int) session.getAttribute("ID");
-					all = id == null ? t.getTasksByUserID(ID) : t.getTasksByUserID(id);
+					all = id == null ? TestDB.getTasksByUserID(ID) : TestDB.getTasksByUserID(id);
 					if (all.isEmpty() == false && all != null) {
 						all = Helper.SearchTaskSearch(all, status != null ? status : -1, search);
 						request.setAttribute("listTask", all);
@@ -131,9 +128,8 @@ public class TaskController {
 	}
 	@RequestMapping(value = "/delete-task", method = RequestMethod.GET)
 	public String delete(@RequestParam("ID") int id,HttpServletRequest request) {
-		TestDB t = new TestDB();
 		try {
-			t.deleteTask(id);
+			TestDB.deleteTask(id);
 			request.setAttribute("checkFlag", 1);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -155,10 +151,9 @@ public class TaskController {
 		{
 			int role = (int)session.getAttribute("role");
 			System.out.println(role + "role");
-			TestDB t = new TestDB();
 			try {
-				List<User> listUser = t.getUserByRole(3);
-				Task tk = t.getTaskByID(id); 
+				List<User> listUser = TestDB.getUserByRole(3);
+				Task tk = TestDB.getTaskByID(id);
 				request.setAttribute("ID", id);
 				request.setAttribute("task", task);
 				request.setAttribute("status", status);
@@ -192,11 +187,10 @@ public class TaskController {
 		HttpSession session = request.getSession();
 		if(session.getAttribute("role") != null) 
 		{
-			TestDB t = new TestDB();
 			String taskName = "";
 			try {
 				if(task == null ) {
-					Task currentTask = t.getTaskByID(id);
+					Task currentTask = TestDB.getTaskByID(id);
 					taskName = currentTask.getName();
 				}else 
 				{
@@ -205,7 +199,7 @@ public class TaskController {
 				Task p = new Task(id, taskName, status, ID_Project,ID_User,startday,endDay);
 				p.setDescription(description);
 				p.setEvidence(evidence);
-				t.updateTask(p);
+				TestDB.updateTask(p);
 				request.setAttribute("checkFlag", 1);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
